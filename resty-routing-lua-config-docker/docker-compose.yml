@@ -1,0 +1,19 @@
+services:
+  item_service:
+    image: developerhelperhub/mes-item-service:1.0.0.1-SNAPSHOT
+    ports:
+      - "8081:8080"  
+
+  order_service:
+    image: developerhelperhub/mes-order-service:1.0.0.1-SNAPSHOT
+    ports:
+      - "8082:8080" 
+
+  api_gateway:
+    build:
+      context: .  # Path to the directory containing the Dockerfile
+      dockerfile: Dockerfile  # Optional, specify if the Dockerfile is named differently
+    ports:
+      - "8080:8080" 
+
+
