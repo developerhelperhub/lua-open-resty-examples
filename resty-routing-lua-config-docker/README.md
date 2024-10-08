@@ -1,29 +1,39 @@
 
 
+Select the working directory of the project `resty-routing-lua-config-docker`
+```shell
+cd resty-routing-lua-config-docker
+```
 
-lua -v
-Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
+Login inside the container of openresty with lua5.1, for testing the application inside container.  
 
-brew install luarocks
-brew install openssl@1.1
+```shell
+docker run -it --name openresty-lua1.5 -p 8080:8080 --entrypoint /bin/sh -v ${HOME}:/root/ -v ${PWD}:/app -w /app developerhelperhub/openresty-lua1.5
 
-luarocks list
+cp nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+cp -r src/ /usr/local/openresty/nginx/myapp
 
-Debug configuration
-luarocks --lua-version=5.1 install luasec OPENSSL_DIR=$(brew --prefix openssl@1.1) --local --force
-luarocks --lua-version=5.1 install luasocket --local --force
-luarocks --lua-version=5.1 install mobdebug --local
+openresty -g daemon\ off\;
+```
 
-openresty -p $PWD/ -c nginx.conf -g daemon\ off\;
+Replace the ip address upstream service of your host system, 'src/content.lua' file, currently using mac
+```shell
+local upstreams = {
+    item_service = "http://192.168.29.230:8081",
+    order_service = "http://192.168.29.230:8082"
+}
+```
 
-lsof -i :8080
-lsof -i :8173
+Find macOS Host IP Address: You can get your macOS host's IP address as described earlier, using one of the following commands:
+```shell
+ipconfig getifaddr en0  # For Wi-Fi
+ipconfig getifaddr en1  # For Ethernet
+```
 
-luarocks show mobdebug
-luarocks show luasocket
+Makesure the upstream services are running your local machine, which are item-service:8081 and order-service:8082
 
-References
-* https://github.com/openresty/lua-nginx-module/blob/master/README.markdown
-
-luarocks --lua-version=5.1 install lua-resty-http
-luarocks --lua-version=5.1 install lua-resty-openssl
+Following command used to test path route
+```shell
+curl --location 'http://localhost:8080/item-service/items'
+curl --location 'http://localhost:8080/order-service/orders'
+```
