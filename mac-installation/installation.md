@@ -54,20 +54,3 @@ brew services start openresty
 brew services info openresty
 ```
 
-
-
-curl -R -O https://www.lua.org/ftp/lua-5.1.5.tar.gz
-tar -xf lua-5.1.5.tar.gz
-cd lua-5.1.5
-make macosx
-sudo make install
-
-curl -R -O https://luarocks.github.io/luarocks/releases/luarocks-3.9.1.tar.gz
-tar -xf luarocks-3.9.1.tar.gz
-
-./configure --lua-version=5.1 --with-lua=/usr/local/share/lua/5.1 --prefix=/usr/local
-make build
-sudo make install
-
-
-/usr/local/bin /usr/local/include /usr/local/lib /usr/local/man/man1 /usr/local/share/lua/5.1 /usr/local/lib/lua/5.1

@@ -23,6 +23,7 @@ RUN wget https://luarocks.org/releases/luarocks-3.9.2.tar.gz \
 
 
 RUN luarocks install lua-resty-http \
-    && luarocks install lua-resty-openssl
+    && luarocks install lua-resty-openssl \
+    && luarocks install lua-resty-openidc
 
 ENTRYPOINT /bin/sh
