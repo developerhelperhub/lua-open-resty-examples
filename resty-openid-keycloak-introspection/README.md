@@ -18,9 +18,11 @@ Login inside the container of openresty with lua5.1, for testing the application
 
 ```shell
 docker rm mygateway
-docker run -it --name mygateway -p 8080:8080 --entrypoint /bin/sh -v $(PWD)/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf -v $(PWD)/src:/usr/local/openresty/nginx/myapp  -v ${HOME}:/root/ -v ${PWD}:/app -w /app --network kind --link microservices-development-cluster-control-plane:keycloak.myapp.com --add-host keycloak.myapp.com:172.18.0.2  developerhelperhub/openresty-lua1.5
+docker run -it --name mygateway -p 8080:8080 --dns 8.8.8.8 --entrypoint /bin/sh -v $(PWD)/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf -v $(PWD)/src:/usr/local/openresty/nginx/myapp  -v ${HOME}:/root/ -v ${PWD}:/app -w /app --network kind --link microservices-development-cluster-control-plane:keycloak.myapp.com --add-host keycloak.myapp.com:172.18.0.2  developerhelperhub/openresty-lua1.5
 
 cat /etc/hosts
+
+nslookup keycloak.myapp.com
 
 curl http://keycloak.myapp.com/realms/mes-application/.well-known/openid-configuration
 curl http://host.docker.internal:8081/items
@@ -54,3 +56,5 @@ Following command used to test path route
 curl --location 'http://localhost:8080/item-service/items'
 curl --location 'http://localhost:8080/order-service/orders'
 ```
+
+
